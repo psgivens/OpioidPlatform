@@ -1,19 +1,24 @@
-# SoQL Explorer
+# Opioid Platform
 
-## Plan of action
+This project would have been our submission for the https://www.theopioidhackathon.com/ in October 2018.
 
-1. Create web app with https://github.com/Microsoft/TypeScript-React-Starter
-2. Copy application from https://github.com/psgivens/MiscellaneousLinux/tree/master/Tracker/starter-1 . Polish as I go.
-3. Create an API container with docker: https://github.com/psgivens/MiscellaneousLinux/tree/master/Tracker/PomodoroApi
-4. Convert it client to an electron app as per https://github.com/psgivens/MiscellaneousLinux/tree/master/Tracker/ElectronClient
+### Software Application Development
 
-### References
+**A.   Infrastructure/application interface for ethical/secure sharing of opioid-related data among key stakeholders**
 
-* https://github.com/Microsoft/TypeScript-React-Starter
-* https://hackernoon.com/building-a-website-with-react-and-bulma-d655214bff2a
+Opioid-related data typically suffer from reporting lagtimes and lack of detailed information, making it difficult for researchers and public health departments to address the growing crisis. Real-time data can be provided by various stakeholders (e.g., patients, families, industry, public health, law enforcement, etc) through social media, internet search data results, medical records, wearable data, etc. Analysis of these data may help to address this problem by providing real-time novel, personalized information that help public health departments take actionable steps such as deploying interventions and resources. However, there are a number of infrastructural, ethical, and user experience-related questions around collecting and facilitating the sharing of these types of personal data. For example, how could a system or technology like this be created for data to be shared and used in a secure and ethical way so that stakeholders are aware of the risks/benefits of being engaged in this activity?
 
-### Pomodoro Specifications
-https://docs.google.com/document/d/1-UGs1sjak47g3rOUxxQdHw2YaLRaX6qU79luKfSk_-g/edit
+Winning solutions to this track should include a working prototype of a technology and/or mockup showing the interface for how each of the key stakeholders would use and understand how to use the technology.
+
+## Notes for my future canabalism of this project
+
+## Technology Stack
+
+* Typescript & react
+* React / React-Router / React-Redux / React-Sagas
+* Indexeddb
+* webworkers
+* Bulma
 
 ### Install Log
 
