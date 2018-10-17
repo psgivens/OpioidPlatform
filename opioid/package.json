@@ -1,7 +1,17 @@
 {
-  "name": "soqle",
+  "name": "opioid",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
+    "start-ts": "react-scripts-ts start",
+    "start": "npm-run-all -p watch-css start-ts",
+    "build-ts": "react-scripts-ts build",
+    "build": "npm-run-all build-css build-ts",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject"
+  },
   "dependencies": {
     "bulma": "^0.7.1",
     "d3": "^5.5.0",
@@ -21,16 +31,6 @@
     "styled-components": "^3.4.2",
     "ts-jest": "^23.10.2",
     "typed-web-workers": "^2.1.1"
-  },
-  "scripts": {
-    "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
-    "start-ts": "react-scripts-ts start",
-    "start": "npm-run-all -p watch-css start-ts",
-    "build-ts": "react-scripts-ts build",
-    "build": "npm-run-all build-css build-ts",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
     "@types/d3": "^5.0.0",

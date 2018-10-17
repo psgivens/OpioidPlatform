@@ -75,7 +75,7 @@ export class AggregationSaga {
             const loadEvent: IoDatabaseEvent = yield call((command: IoDatabaseCommand) => 
                 this.databaseWorker.post(this.tableNameHonest, command), { 
                     type: "IO_LOAD_DATA",
-                } )
+                } as IoDatabaseCommand)
             const patients: HonestBrokerTemp = {}
             if (loadEvent.type === "IO_DATA_LOADED") {
                 loadEvent.items.forEach((p:HonestBrokerPatientEntityIdb) => patients[p.ssn] = p)
@@ -120,7 +120,7 @@ export class AggregationSaga {
                 this.databaseWorker.post(this.tableNameHonest , command), { 
                     items: Object.getOwnPropertyNames(patients).map(k => patients[k]),
                     type: "IO_LOAD_BATCH",
-                })            
+                } as IoDatabaseCommand)
 
             let savedPatients: HonestBrokerPatientEntityIdb[] = []
             if (event1.type === "IO_DATA_LOADED") {
@@ -150,7 +150,7 @@ export class AggregationSaga {
                     } as ResearcherDataEntityIdb
                 }),
                 type: "IO_LOAD_BATCH",
-            })
+            } as IoDatabaseCommand)
         
             if (event2.type === "IO_DATA_LOADED") {
                 yield put( {
@@ -185,7 +185,7 @@ export class AggregationSaga {
                     } as HealthCareProviderPatientEntityIdb
                 }),
                 type: "IO_LOAD_BATCH",
-            })
+            } as IoDatabaseCommand)
         
             if (event3.type === "IO_DATA_LOADED") {
                 yield put( {

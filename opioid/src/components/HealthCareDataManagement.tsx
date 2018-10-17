@@ -3,6 +3,7 @@ import * as MarkdownIt from 'markdown-it'
 import * as React from 'react';
 import { Redirect } from 'react-router';
 import * as container from 'src/common/IoPatientManagementContainer'
+import Button from 'src/controls/Button'
 import { emptyPatient, HealthCareProviderPatientEntityIdb } from 'src/data/HealthCareProviderModels'
 
 import logo from 'src/images/opioid_health_care_prescribe.svg'
@@ -39,18 +40,13 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
   }
 
   public render () {
-    const createActionButtons = (datasource:HealthCareProviderPatientEntityIdb) => {
-      // const onEdit = (event: React.SyntheticEvent<HTMLButtonElement>) => {
-      //   event.preventDefault()
-      //   this.setState({ ...this.state, editPatient: {...datasource}})    
-      // }
-      // const onDelete = (event: React.SyntheticEvent<HTMLButtonElement>) => {
-      //   event.preventDefault()
-      //   this.props.deleteItem!(datasource.id)
-      // }
+    const createActionButtons = (patient:HealthCareProviderPatientEntityIdb) => {
+      const onSelect = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+        event.preventDefault()
+        this.setState({ ...this.state, editPatient: {...patient}})    
+      }
       return <> 
-          {/* <Button onClick={onEdit} text="Edit" />
-          <Button onClick={onDelete} text="Delete" />  */}
+          <Button onClick={onSelect} text="Show Report" />
         </>
     }
   const markdown = new MarkdownIt()
@@ -77,30 +73,40 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
             <th>Last Name</th>
             <th>SSN</th>
             <th>DOB</th>
-            <th>Patient Report</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
 
         {this.props.items.map((patient:HealthCareProviderPatientEntityIdb)=>
-        {
-          const unsafeReport = {
-            dangerouslySetInnerHTML: { __html: markdown.render(patient.report) },
-          }
-          return <tr key={patient.id}>
-            <td>{patient.firstname} . </td>
+          <> <tr key={patient.id}>
+            <td>{patient.firstname}</td>
             <td>{patient.lastname}</td>
             <td>{patient.ssn}</td>
             <td>{(new Date(patient.dob)).toLocaleString()}</td>
-            <td {...unsafeReport} />
             <td>{createActionButtons(patient)}</td>
           </tr>
-        })}
+        </>)}
 
         </tbody>
       </table>
     </section>
+    <section className="section" style={style}>
+      <div className="Data-entry" >
+        <p><strong>Id: </strong> {this.state.editPatient.id}</p>
+        <p><strong>Name: </strong> {this.state.editPatient.firstname + " " + this.state.editPatient.lastname}</p>
+        <p><strong>SSN: </strong> {this.state.editPatient.ssn}</p>
+        <hr />
+        <p><strong>Report: </strong><br />
+          <span { ...{
+              dangerouslySetInnerHTML: { __html: markdown.render(this.state.editPatient.report) },
+            } } />
+          
+        </p>
+
+      </div>
+    </section>
+
   </div>)
   }
 

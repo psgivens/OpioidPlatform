@@ -1,16 +1,12 @@
-import * as React from 'react';
+import * as React from 'react'
 import { BrowserRouter as Router, Route, Switch   } from "react-router-dom"
 
+import './css/opioid.css'
 
+import './css/App.css'
 
-import './css/soqle.css'
-
-import './App.css'
-
-import CountyHealthCareDataPatientManagement from './components/CountyHealthCareDataPatientManagement';
-import CourtDataManagement from './components/CourtDataManagement';
-import DatasourceManagement from './components/DatasourceManagement';
-import Explorer from './components/Explorer'
+import CountyHealthCareDataPatientManagement from './components/CountyHealthCareDataPatientManagement'
+import CourtDataManagement from './components/CourtDataManagement'
 import HealthCareDataManagement from './components/HealthCareDataManagement'
 import Home from './components/Home'
 import HonestBrokerDataManagement from './components/HonestBrokerDataManagement'
@@ -37,8 +33,6 @@ class App extends React.Component {
           <Route path="/HonestBroker" component= { HonestBrokerDataManagement } />
           <Route path="/Research" component= { ResearchDataManagement } />
           <Route path="/HealthCare" component= { HealthCareDataManagement } />
-          <Route path="/Explorer" component={ Explorer } />
-          <Route path="/Datasources" component={ DatasourceManagement } />
           <Route path="/" component={ Home } />                    
         </Switch>
         </>

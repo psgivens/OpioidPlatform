@@ -97,7 +97,7 @@ export class IoPatientManagementSaga {
             const event: IoDatabaseEvent = yield call((command: IoDatabaseCommand) => this.databaseWorker.post(this.tableName, command), { 
                 item:action.item,
                 type: "IO_INSERT_PATIENT",
-            } )
+            } as IoDatabaseCommand)
 
             if (event.type === "IO_PATIENT_INSERTED") {
                 yield put( {
@@ -123,7 +123,7 @@ export class IoPatientManagementSaga {
             const event: IoDatabaseEvent = yield call((command: IoDatabaseCommand) => this.databaseWorker.post(this.tableName, command), { 
                 id: action.id,
                 type: "IO_DELETE_PATIENT",
-            } )
+            } as IoDatabaseCommand)
 
             if (event.type === "IO_PATIENT_DELETED") {
                 yield put( {
