@@ -1,4 +1,4 @@
-import { IoEntity } from 'src/jscommon/data/IoDomainCommands'
+import { CrudlEntity } from 'src/jscommon/data/CrudlDomainCommands'
 
 export type CourtDataPatientEntity = {} & {
     id: number
@@ -10,7 +10,7 @@ export type CourtDataPatientEntity = {} & {
     courtMandatedTreatment: string
 }
 
-export type CourtDataPatientEntityIdb = CourtDataPatientEntity & IoEntity
+export type CourtDataPatientEntityIdb = CourtDataPatientEntity & CrudlEntity
 
 export const emptyPatient: CourtDataPatientEntityIdb = {
     courtMandatedTreatment: "",

@@ -1,15 +1,16 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects'
 import { CountyHealthPatientEntityIdb } from 'src/data/CountyHealthModels'
 import { CourtDataPatientEntityIdb } from 'src/data/CourtDataModels'
+import { CrudlDatabaseCommand, CrudlDatabaseEvent, CrudlDomainValues, CrudlTableName } from 'src/data/CrudlDomains'
 import { HealthCareProviderPatientEntityIdb } from 'src/data/HealthCareProviderModels'
 import { HonestBrokerPatientEntityIdb } from 'src/data/HonestBrokerModels'
 import { emptyPatient } from 'src/data/HonestBrokerModels'
 import { ResearcherDataEntityIdb } from 'src/data/ResearcherModels'
 import { SocialServicesEntityIdb } from 'src/data/SocialServicesModels'
 import { SubstanceAbusePatientEntityIdb } from 'src/data/SubstanceAbuseModels'
-import { IoPatientManagementDomainEvent } from 'src/jscommon/actions/IoPatientManagementSaga'
-import { DomainValues, IoDatabaseCommand, IoDatabaseEvent, IoDataTableName, IoEntity } from 'src/jscommon/data/IoDomainCommands'
-import { IoDatabaseWorker } from 'src/jscommon/workers/IoDatabaseWorker'
+import { CrudlSagaDomainEvent } from 'src/jscommon/actions/CrudlSaga'
+import { CrudlEntity } from 'src/jscommon/data/CrudlDomainCommands'
+import { IoDatabaseWorker } from 'src/jscommon/workers/CrudlDatabaseWorker'
 import * as reducers from 'src/reducers'
 
 export type AggregationCommand = {
@@ -28,7 +29,7 @@ export type AggregationEvent = {
     type: "AGGREGATION_BROKER_BUILT"
 } | {
     type: "AGGREGATION_REPORT_RESPONSE"    
-    item: IoEntity
+    item: CrudlEntity
 }
 
 /************************ SAGA *********************/
@@ -39,12 +40,12 @@ type HonestBrokerTemp = {} & {
 
 export class AggregationSaga {
     private databaseWorker:IoDatabaseWorker
-    private domainHonest: DomainValues
-    private tableNameHonest: IoDataTableName
-    private domainResearch: DomainValues
-    private tableNameResearch: IoDataTableName
-    private domainProvider: DomainValues
-    private tableNameProvider: IoDataTableName
+    private domainHonest: CrudlDomainValues
+    private tableNameHonest: CrudlTableName
+    private domainResearch: CrudlDomainValues
+    private tableNameResearch: CrudlTableName
+    private domainProvider: CrudlDomainValues
+    private tableNameProvider: CrudlTableName
 
     constructor (databaseWorker:IoDatabaseWorker) {
         this.databaseWorker = databaseWorker
@@ -72,12 +73,12 @@ export class AggregationSaga {
             console.log(JSON.stringify(state))
 
             // Load the existing data from the database
-            const loadEvent: IoDatabaseEvent = yield call((command: IoDatabaseCommand) => 
+            const loadEvent: CrudlDatabaseEvent = yield call((command: CrudlDatabaseCommand) => 
                 this.databaseWorker.post(this.tableNameHonest, command), { 
-                    type: "IO_LOAD_DATA",
-                } as IoDatabaseCommand)
+                    type: "CRUDL_LOAD_DATA",
+                } as CrudlDatabaseCommand)
             const patients: HonestBrokerTemp = {}
-            if (loadEvent.type === "IO_DATA_LOADED") {
+            if (loadEvent.type === "CRUDL_DATA_LOADED") {
                 loadEvent.items.forEach((p:HonestBrokerPatientEntityIdb) => patients[p.ssn] = p)
             }
 
@@ -116,25 +117,25 @@ export class AggregationSaga {
             })
 
             // Save the data into the Honest Broker
-            const event1: IoDatabaseEvent = yield call((command: IoDatabaseCommand) => 
+            const event1: CrudlDatabaseEvent = yield call((command: CrudlDatabaseCommand) => 
                 this.databaseWorker.post(this.tableNameHonest , command), { 
                     items: Object.getOwnPropertyNames(patients).map(k => patients[k]),
-                    type: "IO_LOAD_BATCH",
-                } as IoDatabaseCommand)
+                    type: "CRUDL_LOAD_BATCH",
+                } as CrudlDatabaseCommand)
 
             let savedPatients: HonestBrokerPatientEntityIdb[] = []
-            if (event1.type === "IO_DATA_LOADED") {
+            if (event1.type === "CRUDL_DATA_LOADED") {
                 savedPatients = event1.items as HonestBrokerPatientEntityIdb[]
                 savedPatients = savedPatients ? savedPatients : []
                 yield put( {
                     domain: this.domainHonest,
                     items: savedPatients,
-                    type: "IO_PATIENT_ITEMSLOADED",
-                } as IoPatientManagementDomainEvent)
+                    type: "CRUDL_ITEMSLOADED",
+                } as CrudlSagaDomainEvent)
             }    
 
             // Save the data into the Researcher
-            const event2: IoDatabaseEvent = yield call((command: IoDatabaseCommand) => 
+            const event2: CrudlDatabaseEvent = yield call((command: CrudlDatabaseCommand) => 
             this.databaseWorker.post(this.tableNameResearch , command), { 
                 items: savedPatients.map(p => {
                     return {
@@ -149,20 +150,20 @@ export class AggregationSaga {
                         receiptOfBenefits: p.receiptOfBenefits,
                     } as ResearcherDataEntityIdb
                 }),
-                type: "IO_LOAD_BATCH",
-            } as IoDatabaseCommand)
+                type: "CRUDL_LOAD_BATCH",
+            } as CrudlDatabaseCommand)
         
-            if (event2.type === "IO_DATA_LOADED") {
+            if (event2.type === "CRUDL_DATA_LOADED") {
                 yield put( {
                     domain: this.domainResearch,
                     items: event2.items ? event2.items : [],
-                    type: "IO_PATIENT_ITEMSLOADED",
-                } as IoPatientManagementDomainEvent)
+                    type: "CRUDL_ITEMSLOADED",
+                } as CrudlSagaDomainEvent)
             }    
 
 
             // Save the data into the Researcher
-            const event3: IoDatabaseEvent = yield call((command: IoDatabaseCommand) => 
+            const event3: CrudlDatabaseEvent = yield call((command: CrudlDatabaseCommand) => 
             this.databaseWorker.post(this.tableNameProvider , command), { 
                 items: Object.getOwnPropertyNames(patients).map(k => {
                     const p = patients[k]
@@ -184,15 +185,15 @@ export class AggregationSaga {
                         ssn: p.ssn
                     } as HealthCareProviderPatientEntityIdb
                 }),
-                type: "IO_LOAD_BATCH",
-            } as IoDatabaseCommand)
+                type: "CRUDL_LOAD_BATCH",
+            } as CrudlDatabaseCommand)
         
-            if (event3.type === "IO_DATA_LOADED") {
+            if (event3.type === "CRUDL_DATA_LOADED") {
                 yield put( {
                     domain: this.domainProvider,
                     items: event3.items ? event3.items : [],
-                    type: "IO_PATIENT_ITEMSLOADED",
-                } as IoPatientManagementDomainEvent)
+                    type: "CRUDL_ITEMSLOADED",
+                } as CrudlSagaDomainEvent)
             }    
 
             

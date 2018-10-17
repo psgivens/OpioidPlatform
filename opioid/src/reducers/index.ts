@@ -1,23 +1,23 @@
 import { combineReducers } from 'redux'
-import { ioPatientManagementReducer, IoPatientManagementState } from 'src/jscommon/reducers/ioPatientManagementReducers'
+import { crudlReducer, CrudlState } from 'src/jscommon/reducers/CrudlReducers'
 
 export type All = {} & {
-    substance: IoPatientManagementState,
-    county: IoPatientManagementState,
-    court: IoPatientManagementState,
-    honestBroker: IoPatientManagementState,
-    healthCare: IoPatientManagementState,
-    socialServices: IoPatientManagementState,
-    researchers: IoPatientManagementState
+    substance: CrudlState,
+    county: CrudlState,
+    court: CrudlState,
+    honestBroker: CrudlState,
+    healthCare: CrudlState,
+    socialServices: CrudlState,
+    researchers: CrudlState
   }  
 
 export const reducers = combineReducers({
-    county: ioPatientManagementReducer("CountyHealth"),
-    court: ioPatientManagementReducer("CourtData"),
-    healthCare: ioPatientManagementReducer("HealthCare"),
-    honestBroker: ioPatientManagementReducer("HonestBroker"),
-    researchers: ioPatientManagementReducer("Researcher"),
-    socialServices: ioPatientManagementReducer("SocialServices"),
-    substance: ioPatientManagementReducer("SubstanceData"),
+    county: crudlReducer("CountyHealth"),
+    court: crudlReducer("CourtData"),
+    healthCare: crudlReducer("HealthCare"),
+    honestBroker: crudlReducer("HonestBroker"),
+    researchers: crudlReducer("Researcher"),
+    socialServices: crudlReducer("SocialServices"),
+    substance: crudlReducer("SubstanceData"),
 })
 

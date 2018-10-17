@@ -2,7 +2,7 @@ import * as MarkdownIt from 'markdown-it'
 import * as React from 'react';
 import { Redirect } from 'react-router';
 import { emptyPatient, HealthCareProviderPatientEntityIdb } from 'src/data/HealthCareProviderModels'
-import * as container from 'src/jscommon/components/IoPatientManagementContainer'
+import * as container from 'src/jscommon/components/CrudlContainer'
 import Button from 'src/jscommon/controls/Button'
 
 import logo from 'src/images/opioid_health_care_prescribe.svg'

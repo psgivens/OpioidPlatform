@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Redirect } from 'react-router';
 import { emptyPatient, HonestBrokerPatientEntityIdb } from 'src/data/HonestBrokerModels'
-import * as container from 'src/jscommon/components/IoPatientManagementContainer'
+import * as container from 'src/jscommon/components/CrudlContainer'
 
 import logo from 'src/images/opioid_honest_broker.svg'
 

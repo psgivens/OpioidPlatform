@@ -1,4 +1,4 @@
-import { IoEntity } from 'src/jscommon/data/IoDomainCommands'
+import { CrudlEntity } from 'src/jscommon/data/CrudlDomainCommands'
 
 export type ResearcherDataEntity = {} & {
     id: number
@@ -12,7 +12,7 @@ export type ResearcherDataEntity = {} & {
     receiptOfBenefits: string
 }
 
-export type ResearcherDataEntityIdb = ResearcherDataEntity & IoEntity
+export type ResearcherDataEntityIdb = ResearcherDataEntity & CrudlEntity
 
 export const emptyPatient: ResearcherDataEntityIdb = {
     courtMandatedTreatment: "",

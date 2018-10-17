@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Redirect } from 'react-router';
 import { emptyPatient, SubstanceAbusePatientEntityIdb } from 'src/data/SubstanceAbuseModels'
-import * as container from 'src/jscommon/components/IoPatientManagementContainer'
+import * as container from 'src/jscommon/components/CrudlContainer'
 import Button from 'src/jscommon/controls/Button'
 import Hidden from 'src/jscommon/controls/Hidden'
 import TextInput from 'src/jscommon/controls/TextInput'
