@@ -10,10 +10,10 @@
     "build-ts": "react-scripts-ts build",
     "build": "npm-run-all build-css build-ts",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "## react-scripts-ts eject"
   },
   "dependencies": {
-    "bulma": "^0.7.1",
+    "bulma": "^0.7.2",
     "d3": "^5.5.0",
     "markdown-it": "^8.4.2",
     "moment": "^2.22.2",
@@ -37,8 +37,8 @@
     "@types/jest": "^23.3.2",
     "@types/markdown-it": "0.0.6",
     "@types/node": "^10.11.3",
-    "@types/react": "^16.4.14",
-    "@types/react-dom": "^16.0.8",
+    "@types/react": "^16.4.18",
+    "@types/react-dom": "^16.0.9",
     "@types/react-redux": "^6.0.5",
     "@types/react-router": "^4.0.30",
     "@types/react-router-dom": "^4.3.0",

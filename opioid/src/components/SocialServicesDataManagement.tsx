@@ -1,11 +1,10 @@
-
 import * as React from 'react';
 import { Redirect } from 'react-router';
-import * as container from 'src/common/IoPatientManagementContainer'
-import Button from 'src/controls/Button'
-import Hidden from 'src/controls/Hidden'
-import TextInput from 'src/controls/TextInput'
 import { emptyPatient, SocialServicesEntityIdb } from 'src/data/SocialServicesModels'
+import * as container from 'src/jscommon/components/IoPatientManagementContainer'
+import Button from 'src/jscommon/controls/Button'
+import Hidden from 'src/jscommon/controls/Hidden'
+import TextInput from 'src/jscommon/controls/TextInput'
 
 import logo from '../images/opioid_social_services.svg'
 const style={ background: "#008000ff" }

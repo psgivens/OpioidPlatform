@@ -1,8 +1,7 @@
-
-import * as React from 'react';
-import { Redirect } from 'react-router';
-import * as container from 'src/common/IoPatientManagementContainer'
+import * as React from 'react'
+import { Redirect } from 'react-router'
 import { emptyPatient, ResearcherDataEntityIdb } from 'src/data/ResearcherModels'
+import * as container from 'src/jscommon/components/IoPatientManagementContainer'
 
 import logo from 'src/images/opioid_researchers.svg'
 const style={ background: "#ff6600ff" }

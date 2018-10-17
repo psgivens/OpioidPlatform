@@ -1,10 +1,5 @@
 import * as React from 'react'
 import { BrowserRouter as Router, Route, Switch   } from "react-router-dom"
-
-import './css/opioid.css'
-
-import './css/App.css'
-
 import CountyHealthCareDataPatientManagement from './components/CountyHealthCareDataPatientManagement'
 import CourtDataManagement from './components/CourtDataManagement'
 import HealthCareDataManagement from './components/HealthCareDataManagement'
@@ -14,6 +9,10 @@ import ResearchDataManagement from './components/ResearchDataManagement'
 import SocialServicesDataManagement from './components/SocialServicesDataManagement'
 import SubstanceAbuseDataPatientManagement from './components/SubstanceAbuseDataPatientManagement'
 import MainMenu from './controls/MainMenu'
+
+import './css/opioid.css'
+
+import './css/App.css'
 
 class App extends React.Component {
   public render() {

@@ -3,14 +3,14 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, Store as ReduxStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import { IoPatientManagementSaga } from 'src/jscommon/actions/IoPatientManagementSaga'
+import { IoDatabaseWorker } from 'src/jscommon/workers/IoDatabaseWorker'
 import { AggregationSaga } from './actions/AggregationSaga'
-import { IoPatientManagementSaga } from './actions/IoPatientManagementSaga'
 import App from './App';
 import './index.css';
 import * as state from './reducers';
 import { reducers } from './reducers';
 import registerServiceWorker from './registerServiceWorker';
-import { IoDatabaseWorker } from './workers/IoDatabaseWorker'
 
 const sagaMiddleware = createSagaMiddleware()
 const store: ReduxStore<state.All> = createStore(reducers, {}, applyMiddleware(sagaMiddleware))

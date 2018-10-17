@@ -1,4 +1,4 @@
-import { IoEntity } from './IoDomainCommands'
+import { IoEntity } from 'src/jscommon/data/IoDomainCommands'
 
 export type ResearcherDataEntity = {} & {
     id: number

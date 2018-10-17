@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { ioPatientManagementReducer, IoPatientManagementState } from './ioPatientManagementReducers'
+import { ioPatientManagementReducer, IoPatientManagementState } from 'src/jscommon/reducers/ioPatientManagementReducers'
 
 export type All = {} & {
     substance: IoPatientManagementState,

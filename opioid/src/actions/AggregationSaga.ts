@@ -4,13 +4,13 @@ import { CourtDataPatientEntityIdb } from 'src/data/CourtDataModels'
 import { HealthCareProviderPatientEntityIdb } from 'src/data/HealthCareProviderModels'
 import { HonestBrokerPatientEntityIdb } from 'src/data/HonestBrokerModels'
 import { emptyPatient } from 'src/data/HonestBrokerModels'
-import { DomainValues, IoDatabaseCommand, IoDatabaseEvent, IoDataTableName, IoEntity } from 'src/data/IoDomainCommands'
 import { ResearcherDataEntityIdb } from 'src/data/ResearcherModels'
 import { SocialServicesEntityIdb } from 'src/data/SocialServicesModels'
 import { SubstanceAbusePatientEntityIdb } from 'src/data/SubstanceAbuseModels'
+import { IoPatientManagementDomainEvent } from 'src/jscommon/actions/IoPatientManagementSaga'
+import { DomainValues, IoDatabaseCommand, IoDatabaseEvent, IoDataTableName, IoEntity } from 'src/jscommon/data/IoDomainCommands'
+import { IoDatabaseWorker } from 'src/jscommon/workers/IoDatabaseWorker'
 import * as reducers from 'src/reducers'
-import { IoDatabaseWorker } from 'src/workers/IoDatabaseWorker'
-import { IoPatientManagementDomainEvent } from './IoPatientManagementSaga'
 
 export type AggregationCommand = {
     type: "AGGREGATION_BUILD_BROKER"

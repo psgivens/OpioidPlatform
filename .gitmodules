@@ -1,0 +1,6 @@
+[submodule "opioid/jscommon"]
+	path = opioid/jscommon
+	url = https://github.com/psgivens/jscommon
+[submodule "opioid/src/jscommon"]
+	path = opioid/src/jscommon
+	url = https://github.com/psgivens/jscommon
