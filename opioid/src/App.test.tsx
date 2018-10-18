@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, Store as ReduxStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { CrudlSaga } from 'src/jscommon/actions/CrudlSaga'
-import { IoDatabaseWorker } from 'src/jscommon/workers/CrudlDatabaseWorker'
+import { CrudlDatabaseWorker } from 'src/jscommon/workers/CrudlDatabaseWorker'
 import { AggregationSaga } from './actions/AggregationSaga'
 import App from './App';
 import './index.css';
@@ -16,7 +16,7 @@ const sagaMiddleware = createSagaMiddleware()
 const store: ReduxStore<state.All> = createStore(reducers, {}, applyMiddleware(sagaMiddleware))
 
 // *********** Generic Patients Database Worker **************
-const ioDatabaseWorker = new IoDatabaseWorker(store.dispatch)
+const ioDatabaseWorker = new CrudlDatabaseWorker(store.dispatch)
 
 const emrPatientManagementSaga = new CrudlSaga(ioDatabaseWorker, "CountyHealth", "CountyHealthData")
 sagaMiddleware.run(() => emrPatientManagementSaga.saga())

@@ -10,7 +10,7 @@ import { SocialServicesEntityIdb } from 'src/data/SocialServicesModels'
 import { SubstanceAbusePatientEntityIdb } from 'src/data/SubstanceAbuseModels'
 import { CrudlSagaDomainEvent } from 'src/jscommon/actions/CrudlSaga'
 import { CrudlEntity } from 'src/jscommon/data/CrudlDomainCommands'
-import { IoDatabaseWorker } from 'src/jscommon/workers/CrudlDatabaseWorker'
+import { CrudlDatabaseWorker } from 'src/jscommon/workers/CrudlDatabaseWorker'
 import * as reducers from 'src/reducers'
 
 export type AggregationCommand = {
@@ -39,7 +39,7 @@ type HonestBrokerTemp = {} & {
 }
 
 export class AggregationSaga {
-    private databaseWorker:IoDatabaseWorker
+    private databaseWorker:CrudlDatabaseWorker
     private domainHonest: CrudlDomainValues
     private tableNameHonest: CrudlTableName
     private domainResearch: CrudlDomainValues
@@ -47,7 +47,7 @@ export class AggregationSaga {
     private domainProvider: CrudlDomainValues
     private tableNameProvider: CrudlTableName
 
-    constructor (databaseWorker:IoDatabaseWorker) {
+    constructor (databaseWorker:CrudlDatabaseWorker) {
         this.databaseWorker = databaseWorker
         this.saga = this.saga.bind(this)
         this.buildBroker = this.buildBroker.bind(this)
