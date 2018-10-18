@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Redirect } from 'react-router';
-import { emptyPatient, HonestBrokerPatientEntityIdb } from 'src/data/HonestBrokerModels'
+import { emptyPatient, HonestBrokerPatientEntityIdb } from 'src/core/data/HonestBrokerModels'
 import * as container from 'src/jscommon/components/CrudlContainer'
 
-import logo from 'src/images/opioid_honest_broker.svg'
+import logo from '../images/opioid_honest_broker.svg'
 
 const style={ background: "#c8ab37ff" }
 

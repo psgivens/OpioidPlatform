@@ -1,14 +1,15 @@
 import * as React from 'react'
 import { BrowserRouter as Router, Route, Switch   } from "react-router-dom"
-import CountyHealthCareDataPatientManagement from './components/CountyHealthCareDataPatientManagement'
-import CourtDataManagement from './components/CourtDataManagement'
-import HealthCareDataManagement from './components/HealthCareDataManagement'
-import Home from './components/Home'
-import HonestBrokerDataManagement from './components/HonestBrokerDataManagement'
-import ResearchDataManagement from './components/ResearchDataManagement'
-import SocialServicesDataManagement from './components/SocialServicesDataManagement'
-import SubstanceAbuseDataPatientManagement from './components/SubstanceAbuseDataPatientManagement'
-import MainMenu from './controls/MainMenu'
+import MainMenu from './controls/MainMenu';
+import CountyHealthCareDataPatientManagement from './core/components/CountyHealthCareDataPatientManagement'
+import CourtDataManagement from './core/components/CourtDataManagement'
+import HealthCareDataManagement from './core/components/HealthCareDataManagement'
+import Home from './core/components/Home'
+import HonestBrokerDataManagement from './core/components/HonestBrokerDataManagement'
+import ResearchDataManagement from './core/components/ResearchDataManagement'
+import SocialServicesDataManagement from './core/components/SocialServicesDataManagement'
+import SubstanceAbuseDataPatientManagement from './core/components/SubstanceAbuseDataPatientManagement'
+
 
 import './css/opioid.css'
 

@@ -1,26 +1,27 @@
-import * as React from 'react'
-import { Redirect } from 'react-router'
-import { emptyPatient, ResearcherDataEntityIdb } from 'src/data/ResearcherModels'
+import * as MarkdownIt from 'markdown-it'
+import * as React from 'react';
+import { Redirect } from 'react-router';
+import { emptyPatient, HealthCareProviderPatientEntityIdb } from 'src/core/data/HealthCareProviderModels'
 import * as container from 'src/jscommon/components/CrudlContainer'
+import Button from 'src/jscommon/controls/Button'
 
-import logo from 'src/images/opioid_researchers.svg'
-const style={ background: "#ff6600ff" }
+import logo from '../images/opioid_health_care_prescribe.svg'
 
-type ThisProps = container.StateProps<ResearcherDataEntityIdb> & container.ConnectedDispatch<ResearcherDataEntityIdb> & container.AttributeProps
+const style={ background: "#aa0000ff" }
+
+type ThisProps = container.StateProps<HealthCareProviderPatientEntityIdb> & container.ConnectedDispatch<HealthCareProviderPatientEntityIdb> & container.AttributeProps
 
 // TODO: Add error-boundaries
 // https://reactjs.org/docs/error-boundaries.html
 
 type ComponentState = {} & {
-  editPatient: ResearcherDataEntityIdb,
+  editPatient: HealthCareProviderPatientEntityIdb,
   redirect: string | void
 }
 
-class ResearchDataManagement extends React.Component<ThisProps, ComponentState> {
+class DatasourceManagementComp extends React.Component<ThisProps, ComponentState> {
   constructor (props:ThisProps) {
     super (props)
-      // this.state = {
-      // }
 
     this.state = {
       editPatient: emptyPatient,
@@ -33,11 +34,21 @@ class ResearchDataManagement extends React.Component<ThisProps, ComponentState> 
     this.onHousingChanged = this.onHousingChanged.bind(this)
     this.onSubmitPressed = this.onSubmitPressed.bind(this)
     this.onClearPressed = this.onClearPressed.bind(this)
-    
+
     this.props.loadItems!()
   }
 
   public render () {
+    const createActionButtons = (patient:HealthCareProviderPatientEntityIdb) => {
+      const onSelect = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+        event.preventDefault()
+        this.setState({ ...this.state, editPatient: {...patient}})    
+      }
+      return <> 
+          <Button onClick={onSelect} text="Show Report" />
+        </>
+    }
+  const markdown = new MarkdownIt()
   return this.state.redirect 
     ? <Redirect to={this.state.redirect} />
     : (<div className="container-fluid" >
@@ -46,10 +57,10 @@ class ResearchDataManagement extends React.Component<ThisProps, ComponentState> 
       <section className="hero is-primary" style={style}>
       <div className="hero-body">
         <p className="title">
-          Researchers
+          Health Care Providers
         </p>
         <p className="subtitle">
-          This data is de-identified and aggregated for research.
+          This data represents what the provider might see when prescribing opioids.
         </p>
       </div>
     </section>    
@@ -57,43 +68,44 @@ class ResearchDataManagement extends React.Component<ThisProps, ComponentState> 
       <table className="table">
         <thead>
           <tr>
-            <th>Identifier</th>
-
-            <th>Diagnosis</th>
-            <th>Drugs Prescribed</th>
-
-            <th>Primary Drug</th>
-            <th>Last Encounter Result</th>
-
-            <th>Housing Condition</th>
-            <th>Receipt of Benefits</th>
-
-            <th>Prior Convictions</th>
-            <th>Court Mandated Treatement</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>SSN</th>
+            <th>DOB</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
 
-        {this.props.items.map((patient:ResearcherDataEntityIdb)=>
-          <tr key={patient.id}>
-            <td>{patient.id}</td>
-
-            <td>{patient.diagnosis}</td>
-            <td>{patient.drugsPrescribed}</td>
-            
-            <td>{patient.primaryDrug}</td>
-            <td>{patient.lastEncounterResult}</td>
-
-            <td>{patient.housingCondition}</td>
-            <td>{patient.receiptOfBenefits}</td>
-
-            <td>{patient.priorConvictions}</td>
-            <td>{patient.courtMandatedTreatment}</td>
-          </tr>)}
+        {this.props.items.map((patient:HealthCareProviderPatientEntityIdb)=>
+          <> <tr key={patient.id}>
+            <td>{patient.firstname}</td>
+            <td>{patient.lastname}</td>
+            <td>{patient.ssn}</td>
+            <td>{(new Date(patient.dob)).toLocaleString()}</td>
+            <td>{createActionButtons(patient)}</td>
+          </tr>
+        </>)}
 
         </tbody>
       </table>
     </section>
+    <section className="section" style={style}>
+      <div className="Data-entry" >
+        <p><strong>Id: </strong> {this.state.editPatient.id}</p>
+        <p><strong>Name: </strong> {this.state.editPatient.firstname + " " + this.state.editPatient.lastname}</p>
+        <p><strong>SSN: </strong> {this.state.editPatient.ssn}</p>
+        <hr />
+        <p><strong>Report: </strong><br />
+          <span { ...{
+              dangerouslySetInnerHTML: { __html: markdown.render(this.state.editPatient.report) },
+            } } />
+          
+        </p>
+
+      </div>
+    </section>
+
   </div>)
   }
 
@@ -128,11 +140,12 @@ class ResearchDataManagement extends React.Component<ThisProps, ComponentState> 
       { ...this.state.editPatient }
     )
   }
+
   private onClearPressed (event: React.SyntheticEvent<HTMLButtonElement>) {
     event.preventDefault()
     this.setState({ ...this.state, editPatient: emptyPatient })    
   }
-
 }
 
-export default container.connectContainer("Researcher", ResearchDataManagement, s => s.researchers)
+export default container.connectContainer("HealthCare", DatasourceManagementComp, s => s.healthCare)
+// export default connect<{}, {}, container.AttributeProps>(container.mapStateToProps, container.mapDispatchToProps) (DatasourceManagementComp)

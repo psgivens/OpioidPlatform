@@ -1,27 +1,29 @@
-import * as MarkdownIt from 'markdown-it'
 import * as React from 'react';
 import { Redirect } from 'react-router';
-import { emptyPatient, HealthCareProviderPatientEntityIdb } from 'src/data/HealthCareProviderModels'
+import { emptyPatient, SocialServicesEntityIdb } from 'src/core/data/SocialServicesModels'
 import * as container from 'src/jscommon/components/CrudlContainer'
 import Button from 'src/jscommon/controls/Button'
+import Hidden from 'src/jscommon/controls/Hidden'
+import TextInput from 'src/jscommon/controls/TextInput'
 
-import logo from 'src/images/opioid_health_care_prescribe.svg'
+import logo from '../images/opioid_social_services.svg'
+const style={ background: "#008000ff" }
 
-const style={ background: "#aa0000ff" }
-
-type ThisProps = container.StateProps<HealthCareProviderPatientEntityIdb> & container.ConnectedDispatch<HealthCareProviderPatientEntityIdb> & container.AttributeProps
+type ThisProps = container.StateProps<SocialServicesEntityIdb> & container.ConnectedDispatch<SocialServicesEntityIdb> & container.AttributeProps
 
 // TODO: Add error-boundaries
 // https://reactjs.org/docs/error-boundaries.html
 
 type ComponentState = {} & {
-  editPatient: HealthCareProviderPatientEntityIdb,
+  editPatient: SocialServicesEntityIdb,
   redirect: string | void
 }
 
 class DatasourceManagementComp extends React.Component<ThisProps, ComponentState> {
   constructor (props:ThisProps) {
     super (props)
+      // this.state = {
+      // }
 
     this.state = {
       editPatient: emptyPatient,
@@ -34,21 +36,25 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
     this.onHousingChanged = this.onHousingChanged.bind(this)
     this.onSubmitPressed = this.onSubmitPressed.bind(this)
     this.onClearPressed = this.onClearPressed.bind(this)
-
+    
     this.props.loadItems!()
   }
 
   public render () {
-    const createActionButtons = (patient:HealthCareProviderPatientEntityIdb) => {
-      const onSelect = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+    const createActionButtons = (datasource:SocialServicesEntityIdb) => {
+      const onEdit = (event: React.SyntheticEvent<HTMLButtonElement>) => {
         event.preventDefault()
-        this.setState({ ...this.state, editPatient: {...patient}})    
+        this.setState({ ...this.state, editPatient: {...datasource}})    
+      }
+      const onDelete = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+        event.preventDefault()
+        this.props.deleteItem!(datasource.id)
       }
       return <> 
-          <Button onClick={onSelect} text="Show Report" />
+          <Button onClick={onEdit} text="Edit" />
+          <Button onClick={onDelete} text="Delete" /> 
         </>
     }
-  const markdown = new MarkdownIt()
   return this.state.redirect 
     ? <Redirect to={this.state.redirect} />
     : (<div className="container-fluid" >
@@ -57,10 +63,10 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
       <section className="hero is-primary" style={style}>
       <div className="hero-body">
         <p className="title">
-          Health Care Providers
+          Social Services Data
         </p>
         <p className="subtitle">
-          This data represents what the provider might see when prescribing opioids.
+          This is data provided by the Social Services Data
         </p>
       </div>
     </section>    
@@ -68,44 +74,75 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
       <table className="table">
         <thead>
           <tr>
+            <th>Identifier</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>SSN</th>
             <th>DOB</th>
-            <th>Actions</th>
+            <th>Housing Condition</th>
+            <th>Receipt of Benefits</th>
           </tr>
         </thead>
         <tbody>
-
-        {this.props.items.map((patient:HealthCareProviderPatientEntityIdb)=>
-          <> <tr key={patient.id}>
+        {this.props.items.map((patient:SocialServicesEntityIdb)=>
+          <tr key={patient.id}>
+            <td>{patient.id}</td>
             <td>{patient.firstname}</td>
             <td>{patient.lastname}</td>
             <td>{patient.ssn}</td>
             <td>{(new Date(patient.dob)).toLocaleString()}</td>
+            <td>{patient.housingCondition}</td>
+            <td>{patient.receiptOfBenefits}</td>
             <td>{createActionButtons(patient)}</td>
-          </tr>
-        </>)}
-
+          </tr>)}
         </tbody>
       </table>
     </section>
     <section className="section" style={style}>
       <div className="Data-entry" >
-        <p><strong>Id: </strong> {this.state.editPatient.id}</p>
-        <p><strong>Name: </strong> {this.state.editPatient.firstname + " " + this.state.editPatient.lastname}</p>
-        <p><strong>SSN: </strong> {this.state.editPatient.ssn}</p>
-        <hr />
-        <p><strong>Report: </strong><br />
-          <span { ...{
-              dangerouslySetInnerHTML: { __html: markdown.render(this.state.editPatient.report) },
-            } } />
-          
-        </p>
-
+      <p>Id: {this.state.editPatient.id}</p>
+      <Hidden
+        name="id"
+        value={this.state.editPatient.id} />
+      <TextInput
+        inputType="text"
+        label="First Name"
+        name="firstname"
+        placeholder="Enter a value"
+        value={this.state.editPatient.firstname}
+        onChange={this.onFirstnameChanged} />
+      <TextInput
+        inputType="text"
+        label="Last Name"
+        name="lastname"
+        placeholder="Enter a value"
+        value={this.state.editPatient.lastname}
+        onChange={this.onLastnameChanged} />        
+      <TextInput
+        inputType="text"
+        label="SSN"
+        name="ssn"
+        placeholder="Enter a value"
+        value={this.state.editPatient.ssn}
+        onChange={this.onSsnChanged} /> 
+      <TextInput
+        inputType="text"
+        label="Housing Condition"
+        name="housing"
+        placeholder="Enter a value"
+        value={this.state.editPatient.housingCondition}
+        onChange={this.onHousingChanged} />                                
+      <TextInput
+        inputType="text"
+        label="Receipt of Benefits"
+        name="benefits"
+        placeholder="Enter a value"
+        value={this.state.editPatient.receiptOfBenefits}
+        onChange={this.onBenefitsChanged} />                                
+      <Button onClick={this.onSubmitPressed} text="Save" />
+      <Button onClick={this.onClearPressed} text="Clear" />
       </div>
     </section>
-
   </div>)
   }
 
@@ -140,12 +177,11 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
       { ...this.state.editPatient }
     )
   }
-
+  
   private onClearPressed (event: React.SyntheticEvent<HTMLButtonElement>) {
     event.preventDefault()
     this.setState({ ...this.state, editPatient: emptyPatient })    
   }
 }
 
-export default container.connectContainer("HealthCare", DatasourceManagementComp, s => s.healthCare)
-// export default connect<{}, {}, container.AttributeProps>(container.mapStateToProps, container.mapDispatchToProps) (DatasourceManagementComp)
+export default container.connectContainer("SocialServices", DatasourceManagementComp, s => s.socialServices)

@@ -1,29 +1,28 @@
 import * as React from 'react';
 import { Redirect } from 'react-router';
-import { emptyPatient, SocialServicesEntityIdb } from 'src/data/SocialServicesModels'
+import { emptyPatient, SubstanceAbusePatientEntityIdb } from 'src/core/data/SubstanceAbuseModels'
 import * as container from 'src/jscommon/components/CrudlContainer'
 import Button from 'src/jscommon/controls/Button'
 import Hidden from 'src/jscommon/controls/Hidden'
 import TextInput from 'src/jscommon/controls/TextInput'
 
-import logo from '../images/opioid_social_services.svg'
-const style={ background: "#008000ff" }
+import logo from '../images/opioid_substance_abuse.svg'
 
-type ThisProps = container.StateProps<SocialServicesEntityIdb> & container.ConnectedDispatch<SocialServicesEntityIdb> & container.AttributeProps
+const style={ background: "#0000ffff" }
+
+type ThisProps = container.StateProps<SubstanceAbusePatientEntityIdb> & container.ConnectedDispatch<SubstanceAbusePatientEntityIdb> & container.AttributeProps
 
 // TODO: Add error-boundaries
 // https://reactjs.org/docs/error-boundaries.html
 
 type ComponentState = {} & {
-  editPatient: SocialServicesEntityIdb,
+  editPatient: SubstanceAbusePatientEntityIdb,
   redirect: string | void
 }
 
 class DatasourceManagementComp extends React.Component<ThisProps, ComponentState> {
   constructor (props:ThisProps) {
     super (props)
-      // this.state = {
-      // }
 
     this.state = {
       editPatient: emptyPatient,
@@ -32,16 +31,16 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
     this.onFirstnameChanged = this.onFirstnameChanged.bind(this)
     this.onLastnameChanged = this.onLastnameChanged.bind(this)
     this.onSsnChanged = this.onSsnChanged.bind(this)
-    this.onBenefitsChanged = this.onBenefitsChanged.bind(this)
-    this.onHousingChanged = this.onHousingChanged.bind(this)
+    this.onLastEncounterChanged = this.onLastEncounterChanged.bind(this)
+    this.onPrimaryChanged = this.onPrimaryChanged.bind(this)
     this.onSubmitPressed = this.onSubmitPressed.bind(this)
     this.onClearPressed = this.onClearPressed.bind(this)
-    
+
     this.props.loadItems!()
   }
 
   public render () {
-    const createActionButtons = (datasource:SocialServicesEntityIdb) => {
+    const createActionButtons = (datasource:SubstanceAbusePatientEntityIdb) => {
       const onEdit = (event: React.SyntheticEvent<HTMLButtonElement>) => {
         event.preventDefault()
         this.setState({ ...this.state, editPatient: {...datasource}})    
@@ -58,15 +57,15 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
   return this.state.redirect 
     ? <Redirect to={this.state.redirect} />
     : (<div className="container-fluid" >
-        <img src={logo} alt="Bulma: a modern CSS framework based on Flexbox" className="Page-logo" />
+    <img src={logo} alt="Bulma: a modern CSS framework based on Flexbox" className="Page-logo" />
 
-      <section className="hero is-primary" style={style}>
+    <section className="hero is-primary" style={style}>
       <div className="hero-body">
         <p className="title">
-          Social Services Data
+          Substance Abuse Clinic Data
         </p>
         <p className="subtitle">
-          This is data provided by the Social Services Data
+          This is data provided by the Substance Abuse Clinic
         </p>
       </div>
     </section>    
@@ -74,32 +73,32 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
       <table className="table">
         <thead>
           <tr>
-            <th>Identifier</th>
+            <th>Identifer</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>SSN</th>
             <th>DOB</th>
-            <th>Housing Condition</th>
-            <th>Receipt of Benefits</th>
+            <th>Primary Drug</th>
+            <th>Last Encounter Results</th>
           </tr>
         </thead>
         <tbody>
-        {this.props.items.map((patient:SocialServicesEntityIdb)=>
+        {this.props.items.map((patient:SubstanceAbusePatientEntityIdb)=>
           <tr key={patient.id}>
             <td>{patient.id}</td>
             <td>{patient.firstname}</td>
             <td>{patient.lastname}</td>
             <td>{patient.ssn}</td>
             <td>{(new Date(patient.dob)).toLocaleString()}</td>
-            <td>{patient.housingCondition}</td>
-            <td>{patient.receiptOfBenefits}</td>
+            <td>{patient.primaryDrug}</td>
+            <td>{patient.lastEncounterResult}</td>
             <td>{createActionButtons(patient)}</td>
           </tr>)}
         </tbody>
       </table>
     </section>
     <section className="section" style={style}>
-      <div className="Data-entry" >
+    <div className="Data-entry" >
       <p>Id: {this.state.editPatient.id}</p>
       <Hidden
         name="id"
@@ -127,18 +126,18 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
         onChange={this.onSsnChanged} /> 
       <TextInput
         inputType="text"
-        label="Housing Condition"
-        name="housing"
+        label="Primary Drug"
+        name="primaryDrug"
         placeholder="Enter a value"
-        value={this.state.editPatient.housingCondition}
-        onChange={this.onHousingChanged} />                                
+        value={this.state.editPatient.primaryDrug}
+        onChange={this.onPrimaryChanged} />                                
       <TextInput
         inputType="text"
-        label="Receipt of Benefits"
-        name="benefits"
+        label="Last Encounter Result"
+        name="lastencounter"
         placeholder="Enter a value"
-        value={this.state.editPatient.receiptOfBenefits}
-        onChange={this.onBenefitsChanged} />                                
+        value={this.state.editPatient.lastEncounterResult}
+        onChange={this.onLastEncounterChanged} />                                
       <Button onClick={this.onSubmitPressed} text="Save" />
       <Button onClick={this.onClearPressed} text="Clear" />
       </div>
@@ -156,9 +155,9 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
     this.setState({ ...this.state, editPatient: {...this.state.editPatient, lastname: event.currentTarget.value}})    
   }
 
-  private onHousingChanged (event: React.SyntheticEvent<HTMLInputElement>) {
+  private onPrimaryChanged (event: React.SyntheticEvent<HTMLInputElement>) {
     event.preventDefault()
-    this.setState({ ...this.state, editPatient: {...this.state.editPatient, housingCondition: event.currentTarget.value}})    
+    this.setState({ ...this.state, editPatient: {...this.state.editPatient, primaryDrug: event.currentTarget.value}})    
   }
 
   private onSsnChanged (event: React.SyntheticEvent<HTMLInputElement>) {
@@ -166,9 +165,9 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
     this.setState({ ...this.state, editPatient: {...this.state.editPatient, ssn: event.currentTarget.value}})    
   }
 
-  private onBenefitsChanged (event: React.SyntheticEvent<HTMLInputElement>) {
+  private onLastEncounterChanged (event: React.SyntheticEvent<HTMLInputElement>) {
     event.preventDefault()
-    this.setState({ ...this.state, editPatient: {...this.state.editPatient, receiptOfBenefits: event.currentTarget.value}})    
+    this.setState({ ...this.state, editPatient: {...this.state.editPatient, lastEncounterResult: event.currentTarget.value}})    
   }
 
   private onSubmitPressed (event: React.SyntheticEvent<HTMLButtonElement>) {
@@ -177,11 +176,11 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
       { ...this.state.editPatient }
     )
   }
-  
+
   private onClearPressed (event: React.SyntheticEvent<HTMLButtonElement>) {
     event.preventDefault()
     this.setState({ ...this.state, editPatient: emptyPatient })    
   }
 }
 
-export default container.connectContainer("SocialServices", DatasourceManagementComp, s => s.socialServices)
+export default container.connectContainer("SubstanceData", DatasourceManagementComp, s => s.substance)

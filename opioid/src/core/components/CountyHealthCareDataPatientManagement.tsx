@@ -1,22 +1,25 @@
 import * as React from 'react';
 import { Redirect } from 'react-router';
-import { emptyPatient, SubstanceAbusePatientEntityIdb } from 'src/data/SubstanceAbuseModels'
 import * as container from 'src/jscommon/components/CrudlContainer'
 import Button from 'src/jscommon/controls/Button'
 import Hidden from 'src/jscommon/controls/Hidden'
 import TextInput from 'src/jscommon/controls/TextInput'
+import { CountyHealthPatientEntityIdb, emptyPatient } from '../data/CountyHealthModels'
 
-import logo from 'src/images/opioid_substance_abuse.svg'
+import logo from '../images/opioid_health_care.svg'
 
-const style={ background: "#0000ffff" }
+const style={ background: "#ff0000ff" }
 
-type ThisProps = container.StateProps<SubstanceAbusePatientEntityIdb> & container.ConnectedDispatch<SubstanceAbusePatientEntityIdb> & container.AttributeProps
+type ThisProps = 
+  container.StateProps<CountyHealthPatientEntityIdb> 
+  & container.ConnectedDispatch<CountyHealthPatientEntityIdb> 
+  & container.AttributeProps
 
 // TODO: Add error-boundaries
 // https://reactjs.org/docs/error-boundaries.html
 
 type ComponentState = {} & {
-  editPatient: SubstanceAbusePatientEntityIdb,
+  editPatient: CountyHealthPatientEntityIdb,
   redirect: string | void
 }
 
@@ -31,16 +34,16 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
     this.onFirstnameChanged = this.onFirstnameChanged.bind(this)
     this.onLastnameChanged = this.onLastnameChanged.bind(this)
     this.onSsnChanged = this.onSsnChanged.bind(this)
-    this.onLastEncounterChanged = this.onLastEncounterChanged.bind(this)
-    this.onPrimaryChanged = this.onPrimaryChanged.bind(this)
-    this.onSubmitPressed = this.onSubmitPressed.bind(this)
+    this.onDiagnosisChanged = this.onDiagnosisChanged.bind(this)
+    this.onDrugsChanged = this.onDrugsChanged.bind(this)
     this.onClearPressed = this.onClearPressed.bind(this)
+    this.onSubmitPressed = this.onSubmitPressed.bind(this)
 
     this.props.loadItems!()
   }
 
   public render () {
-    const createActionButtons = (datasource:SubstanceAbusePatientEntityIdb) => {
+    const createActionButtons = (datasource:CountyHealthPatientEntityIdb) => {
       const onEdit = (event: React.SyntheticEvent<HTMLButtonElement>) => {
         event.preventDefault()
         this.setState({ ...this.state, editPatient: {...datasource}})    
@@ -57,15 +60,15 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
   return this.state.redirect 
     ? <Redirect to={this.state.redirect} />
     : (<div className="container-fluid" >
-    <img src={logo} alt="Bulma: a modern CSS framework based on Flexbox" className="Page-logo" />
+    <img src={logo} alt="Bulma: a modern CSS framework based on Flexbox" className="Page-logo"  />
 
     <section className="hero is-primary" style={style}>
       <div className="hero-body">
         <p className="title">
-          Substance Abuse Clinic Data
+          County Health Care Data
         </p>
         <p className="subtitle">
-          This is data provided by the Substance Abuse Clinic
+          Data provided by EMRs on behalf of county health care
         </p>
       </div>
     </section>    
@@ -73,75 +76,79 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
       <table className="table">
         <thead>
           <tr>
-            <th>Identifer</th>
+            <th>Identifier</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>SSN</th>
             <th>DOB</th>
-            <th>Primary Drug</th>
-            <th>Last Encounter Results</th>
+            <th>Diagnosis</th>
+            <th>Drugs Prescribed</th>
           </tr>
         </thead>
         <tbody>
-        {this.props.items.map((patient:SubstanceAbusePatientEntityIdb)=>
+
+        {this.props.items.map((patient:CountyHealthPatientEntityIdb)=>
           <tr key={patient.id}>
             <td>{patient.id}</td>
             <td>{patient.firstname}</td>
             <td>{patient.lastname}</td>
             <td>{patient.ssn}</td>
             <td>{(new Date(patient.dob)).toLocaleString()}</td>
-            <td>{patient.primaryDrug}</td>
-            <td>{patient.lastEncounterResult}</td>
+            <td>{patient.diagnosis}</td>
+            <td>{patient.drugsPrescribed}</td>            
             <td>{createActionButtons(patient)}</td>
           </tr>)}
+
         </tbody>
       </table>
     </section>
     <section className="section" style={style}>
-    <div className="Data-entry" >
-      <p>Id: {this.state.editPatient.id}</p>
-      <Hidden
-        name="id"
-        value={this.state.editPatient.id} />
-      <TextInput
-        inputType="text"
-        label="First Name"
-        name="firstname"
-        placeholder="Enter a value"
-        value={this.state.editPatient.firstname}
-        onChange={this.onFirstnameChanged} />
-      <TextInput
-        inputType="text"
-        label="Last Name"
-        name="lastname"
-        placeholder="Enter a value"
-        value={this.state.editPatient.lastname}
-        onChange={this.onLastnameChanged} />        
-      <TextInput
-        inputType="text"
-        label="SSN"
-        name="ssn"
-        placeholder="Enter a value"
-        value={this.state.editPatient.ssn}
-        onChange={this.onSsnChanged} /> 
-      <TextInput
-        inputType="text"
-        label="Primary Drug"
-        name="primaryDrug"
-        placeholder="Enter a value"
-        value={this.state.editPatient.primaryDrug}
-        onChange={this.onPrimaryChanged} />                                
-      <TextInput
-        inputType="text"
-        label="Last Encounter Result"
-        name="lastencounter"
-        placeholder="Enter a value"
-        value={this.state.editPatient.lastEncounterResult}
-        onChange={this.onLastEncounterChanged} />                                
-      <Button onClick={this.onSubmitPressed} text="Save" />
-      <Button onClick={this.onClearPressed} text="Clear" />
+      <div className="Data-entry" >
+        <p>Id: {this.state.editPatient.id}</p>
+        <Hidden
+          name="id"
+          value={this.state.editPatient.id} />
+        <TextInput
+          inputType="text"
+          label="First Name"
+          name="firstname"
+          placeholder="Enter a value"
+          value={this.state.editPatient.firstname}
+          onChange={this.onFirstnameChanged} />
+        <TextInput
+          inputType="text"
+          label="Last Name"
+          name="lastname"
+          placeholder="Enter a value"
+          value={this.state.editPatient.lastname}
+          onChange={this.onLastnameChanged} />        
+        <TextInput
+          inputType="text"
+          label="SSN"
+          name="ssn"
+          placeholder="Enter a value"
+          value={this.state.editPatient.ssn}
+          onChange={this.onSsnChanged} /> 
+        <TextInput
+          inputType="text"
+          label="Diagnosis"
+          name="diagnosis"
+          placeholder="Enter a value"
+          value={this.state.editPatient.diagnosis}
+          onChange={this.onDiagnosisChanged} />                                
+        <TextInput
+          inputType="text"
+          label="Drugs Prescribed"
+          name="drugs"
+          placeholder="Enter a value"
+          value={this.state.editPatient.drugsPrescribed}
+          onChange={this.onDrugsChanged} />                                
+
+        <Button onClick={this.onSubmitPressed} text="Save" />
+        <Button onClick={this.onClearPressed} text="Clear" />
       </div>
     </section>
+
   </div>)
   }
 
@@ -155,9 +162,9 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
     this.setState({ ...this.state, editPatient: {...this.state.editPatient, lastname: event.currentTarget.value}})    
   }
 
-  private onPrimaryChanged (event: React.SyntheticEvent<HTMLInputElement>) {
+  private onDrugsChanged (event: React.SyntheticEvent<HTMLInputElement>) {
     event.preventDefault()
-    this.setState({ ...this.state, editPatient: {...this.state.editPatient, primaryDrug: event.currentTarget.value}})    
+    this.setState({ ...this.state, editPatient: {...this.state.editPatient, drugsPrescribed: event.currentTarget.value}})    
   }
 
   private onSsnChanged (event: React.SyntheticEvent<HTMLInputElement>) {
@@ -165,9 +172,9 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
     this.setState({ ...this.state, editPatient: {...this.state.editPatient, ssn: event.currentTarget.value}})    
   }
 
-  private onLastEncounterChanged (event: React.SyntheticEvent<HTMLInputElement>) {
+  private onDiagnosisChanged (event: React.SyntheticEvent<HTMLInputElement>) {
     event.preventDefault()
-    this.setState({ ...this.state, editPatient: {...this.state.editPatient, lastEncounterResult: event.currentTarget.value}})    
+    this.setState({ ...this.state, editPatient: {...this.state.editPatient, diagnosis: event.currentTarget.value}})    
   }
 
   private onSubmitPressed (event: React.SyntheticEvent<HTMLButtonElement>) {
@@ -181,6 +188,7 @@ class DatasourceManagementComp extends React.Component<ThisProps, ComponentState
     event.preventDefault()
     this.setState({ ...this.state, editPatient: emptyPatient })    
   }
+
 }
 
-export default container.connectContainer("SubstanceData", DatasourceManagementComp, s => s.substance)
+export default container.connectContainer("CountyHealth", DatasourceManagementComp, (s => s.county))

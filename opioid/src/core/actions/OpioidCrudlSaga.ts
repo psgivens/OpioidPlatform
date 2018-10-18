@@ -1,9 +1,8 @@
 import { put } from 'redux-saga/effects';
-import { CrudlDomainValues, CrudlTableName } from 'src/data/CrudlDomains';
+import { CrudlDomainValues, CrudlTableName } from 'src/core/data/CrudlDomains';
 import { CrudlCallbacks, CrudlSaga, CrudlSagaDomainEvent } from 'src/jscommon/actions/CrudlSaga';
 import { CrudlDatabaseWorker } from 'src/jscommon/workers/CrudlDatabaseWorker';
-
-import { AggregationCommands } from 'src/actions/AggregationSaga'
+import { AggregationCommands } from './AggregationSaga'
 
 export class OpioidCrudlSaga extends CrudlSaga {
     constructor (

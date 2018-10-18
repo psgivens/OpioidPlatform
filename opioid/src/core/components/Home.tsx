@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import logo from 'src/images/logo.svg'
+import logo from '../images/logo.svg'
 
 const style = { background: "#800080ff" }
 
