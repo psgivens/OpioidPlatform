@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux'
+import { Common, commonReducers } from 'src/jscommon/reducers';
 import { crudlReducer, CrudlState } from 'src/jscommon/reducers/CrudlReducers'
 
-export type All = {} & {
+export type All = Common & {
     substance: CrudlState,
     county: CrudlState,
     court: CrudlState,
@@ -11,7 +12,7 @@ export type All = {} & {
     researchers: CrudlState
   }  
 
-export const reducers = combineReducers({
+export const reducers = combineReducers( {...commonReducers, ...{
     county: crudlReducer("CountyHealth"),
     court: crudlReducer("CourtData"),
     healthCare: crudlReducer("HealthCare"),
@@ -19,5 +20,5 @@ export const reducers = combineReducers({
     researchers: crudlReducer("Researcher"),
     socialServices: crudlReducer("SocialServices"),
     substance: crudlReducer("SubstanceData"),
-})
+}})
 

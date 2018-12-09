@@ -1,6 +1,6 @@
-import { Api as BaseApi, api as baseApi } from 'src/jscommon/apis'
+import { pingApi as baseApi } from 'src/jscommon/apis'
 
-export type Api = BaseApi & {
+export type Api = {} & {
     testIp: () => Promise<Response>
     testConnection: () => Promise<void | Response>
     querySocrata: (url:string, query:string) => Promise<void | Response>
