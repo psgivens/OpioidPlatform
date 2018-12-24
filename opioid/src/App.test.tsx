@@ -3,14 +3,14 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, Store as ReduxStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import { CrudlSaga } from 'src/jscommon/actions/CrudlSaga'
 import { CrudlDatabaseWorker } from 'src/jscommon/workers/CrudlDatabaseWorker'
 import App from './App';
 import { AggregationSaga } from './core/actions/AggregationSaga'
-import * as state from './core/reducers';
-import { reducers } from './core/reducers';
-import './index.css';
-import registerServiceWorker from './registerServiceWorker';
+import { OpioidCrudlSaga } from './core/actions/OpioidCrudlSaga'
+import * as state from './core/reducers'
+import { reducers } from './core/reducers'
+import './index.css'
+import registerServiceWorker from './registerServiceWorker'
 
 const sagaMiddleware = createSagaMiddleware()
 const store: ReduxStore<state.All> = createStore(reducers, {}, applyMiddleware(sagaMiddleware))
@@ -18,25 +18,25 @@ const store: ReduxStore<state.All> = createStore(reducers, {}, applyMiddleware(s
 // *********** Generic Patients Database Worker **************
 const ioDatabaseWorker = new CrudlDatabaseWorker(store.dispatch)
 
-const emrPatientManagementSaga = new CrudlSaga(ioDatabaseWorker, "CountyHealth", "CountyHealthData")
+const emrPatientManagementSaga = new OpioidCrudlSaga(ioDatabaseWorker, "CountyHealth", "CountyHealthData")
 sagaMiddleware.run(() => emrPatientManagementSaga.saga())
 
-const pPatientManagementSaga = new CrudlSaga(ioDatabaseWorker, "SubstanceData", "SubstanceAbuseData")
+const pPatientManagementSaga = new OpioidCrudlSaga(ioDatabaseWorker, "SubstanceData", "SubstanceAbuseData")
 sagaMiddleware.run(() => pPatientManagementSaga.saga())
 
-const courtDataManagementSaga = new CrudlSaga(ioDatabaseWorker, "CourtData", "CourtData")
+const courtDataManagementSaga = new OpioidCrudlSaga(ioDatabaseWorker, "CourtData", "CourtData")
 sagaMiddleware.run(() => courtDataManagementSaga.saga())
 
-const socialServicesManagementSaga = new CrudlSaga(ioDatabaseWorker, "SocialServices", "SocialServicesData")
+const socialServicesManagementSaga = new OpioidCrudlSaga(ioDatabaseWorker, "SocialServices", "SocialServicesData")
 sagaMiddleware.run(() => socialServicesManagementSaga.saga())
 
-const honestyManagementSaga = new CrudlSaga(ioDatabaseWorker, "HonestBroker", "HonestBrokerData")
+const honestyManagementSaga = new OpioidCrudlSaga(ioDatabaseWorker, "HonestBroker", "HonestBrokerData")
 sagaMiddleware.run(() => honestyManagementSaga.saga())
 
-const researchManagementSaga = new CrudlSaga(ioDatabaseWorker, "Researcher", "SubstanceAbuseReport")
+const researchManagementSaga = new OpioidCrudlSaga(ioDatabaseWorker, "Researcher", "SubstanceAbuseReport")
 sagaMiddleware.run(() => researchManagementSaga.saga())
 
-const socialReportManagementSaga = new CrudlSaga(ioDatabaseWorker, "HealthCare", "HealthCareReport")
+const socialReportManagementSaga = new OpioidCrudlSaga(ioDatabaseWorker, "HealthCare", "HealthCareReport")
 sagaMiddleware.run(() => socialReportManagementSaga.saga())
 
 const aggregationSaga = new AggregationSaga(ioDatabaseWorker)
