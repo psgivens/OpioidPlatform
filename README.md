@@ -24,6 +24,7 @@ Winning solutions to this track should include a working prototype of a technolo
 
     # Globally
     sudo npm install -g typescript
+
     sudo npm install -g create-react-app
         
     # Create app with typescript
